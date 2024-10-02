@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import '../public/styles/variables';
+
+html {
+  height: 100%;
+  font-size: 14px;
+}
+
+body {
+  font-weight: var(--font-weight);
+  font-family: var(--primary-font-family), Arial, sans-serif;
+  color: var(--primary-text-color);
+  margin: 0;
+  padding: 0;
+  background-color: var(--backround-color);
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
