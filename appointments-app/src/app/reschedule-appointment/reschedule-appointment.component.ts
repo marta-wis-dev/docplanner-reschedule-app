@@ -1,12 +1,99 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { DateTimeInputComponent } from './components/date-time-input/date-time-input.component';
 import { AppointmentTimePickerComponent } from './components/appointment-time-picker/appointment-time-picker.component';
+import { AppointmentService } from './services/appointment.service';
+import { Subscription, tap } from 'rxjs';
+import { AppointmentTimePickerService } from './services/appointment-time-picker.service';
+import { Appointment, AvailabilitySlot } from './model/appointment';
+import { JsonPipe } from '@angular/common';
+import { AppointmentStore } from './services/appointment.store';
 
 @Component({
   selector: 'app-reschedule-appointment',
   standalone: true,
-  imports: [DateTimeInputComponent, AppointmentTimePickerComponent],
+  imports: [DateTimeInputComponent, AppointmentTimePickerComponent, JsonPipe],
   templateUrl: './reschedule-appointment.component.html',
   styleUrl: './reschedule-appointment.component.scss',
 })
-export class RescheduleAppointmentComponent {}
+export class RescheduleAppointmentComponent implements OnInit, OnDestroy {
+  private appointmentService = inject(AppointmentService);
+  private appointmentStore = inject(AppointmentStore);
+  private appointmentTimePickerService = inject(AppointmentTimePickerService);
+
+  appointment = this.appointmentStore.appointment;
+  loading = this.appointmentStore.loading;
+  visibleSlots = this.appointmentTimePickerService.visibleSlots;
+  newSlot = this.appointmentStore.newSlot;
+
+  private subscription: Subscription = new Subscription();
+
+  ngOnInit() {
+    this.fetchAppointment();
+    this.fetchAvailableSlotsForCurrentWeek();
+  }
+
+  submitSelection() {
+    this.appointmentStore.setLoading(true);
+    const newAppointment = this.appointmentStore.newAppointment();
+
+    if (newAppointment) {
+      this.subscription.add(
+        this.appointmentService
+          .postAppointment(newAppointment)
+          .pipe(
+            tap(() => {
+              this.appointmentStore.setNewAppointment();
+              this.appointmentStore.setLoading(false);
+            })
+          )
+          .subscribe()
+      );
+    }
+  }
+
+  selectSlot(slot: AvailabilitySlot) {
+    this.appointmentStore.setNewSlot(slot);
+  }
+
+  setPreviousWeek() {
+    this.appointmentTimePickerService.setPreviousWeek();
+  }
+
+  setNextWeek() {
+    this.appointmentTimePickerService.setNextWeek();
+  }
+
+  private fetchAppointment() {
+    this.subscription.add(
+      this.appointmentService
+        .getAppointment()
+        .pipe(
+          tap((appointment: Appointment) => {
+            this.appointmentStore.setAppointment(appointment);
+            this.appointmentStore.setLoading(false);
+          })
+        )
+        .subscribe()
+    );
+  }
+
+  private fetchAvailableSlotsForCurrentWeek() {
+    const today = new Date();
+    this.appointmentTimePickerService.setVisibleWeekStart(today);
+
+    this.subscription.add(
+      this.appointmentService
+        .getWeeklySlotsAvailability(today)
+        .pipe(
+          tap(slots => {
+            this.appointmentTimePickerService.addAvailableSlots(slots);
+          })
+        )
+        .subscribe()
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}

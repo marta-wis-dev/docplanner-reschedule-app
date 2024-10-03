@@ -1,0 +1,21 @@
+.calendar {
+  display: inline-flex;
+
+  &-day {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+
+    &--body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--slot {
+      padding: 10px;
+      background: lightblue;
+      color: blue;
+      margin-top: 5px;
+    }
+  }
+}

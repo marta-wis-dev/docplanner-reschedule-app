@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 
 @Component({
   selector: 'app-date-time-input',
@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './date-time-input.component.html',
   styleUrl: './date-time-input.component.scss',
 })
-export class DateTimeInputComponent {}
+export class DateTimeInputComponent {
+  value = input.required<string | undefined>();
+  loading = input.required<boolean>();
+  @Input() readonly = true;
+}

@@ -1,1 +1,43 @@
-<p>appointment-time-picker works!</p>
+<div class="container">
+  <!--  startDate: {{ startDate()}}-->
+  <!--  @if(weekDays()) {-->
+
+  <button [disabled]="visibleSlots()[0].date === today()" (click)="prev.emit()">
+    <
+  </button>
+  @if (visibleSlots()) {
+    <div class="calendar">
+      @for (day of visibleSlots(); track day) {
+        <div class="calendar-day">
+          <div class="calendar-day--header">
+            <p>{{ day.date | dayLabel }}</p>
+            <p>{{ day.date | date: 'd MMMM' }}</p>
+          </div>
+          <div class="calendar-day--body">
+            @for (slot of day.slots; track slot) {
+              @if (slot.Taken) {
+                <p class="calendar-day--slot-taken">
+                  {{ slot.Start | date: 'HH:mm' }}
+                </p>
+              } @else {
+                <a
+                  class="calendar-day--slot"
+                  (click)="onSelectSlot.emit(slot)"
+                  >{{ slot.Start | date: 'HH:mm' }}</a
+                >
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!--&lt;!&ndash;        </ul>&ndash;&gt;-->
+  <!--&lt;!&ndash;      </div>&ndash;&gt;-->
+  <!--&lt;!&ndash;    </ng-template>&ndash;&gt;-->
+  <!--&lt;!&ndash;      }&ndash;&gt;-->
+  <!--&lt;!&ndash;  </carousel>&ndash;&gt;-->
+
+  <button (click)="next.emit()">></button>
+</div>

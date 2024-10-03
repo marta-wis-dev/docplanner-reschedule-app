@@ -2,7 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { addWeeks, format, parseISO } from 'date-fns';
 import { map, Observable, of, zip } from 'rxjs';
-import { BACKEND_API_URL, GET_WEEKLY_SLOTS_ENDPOINT } from '../service-config';
+import {
+  BACKEND_API_URL,
+  BOOK_SLOTS_ENDPOINT,
+  GET_WEEKLY_SLOTS_ENDPOINT,
+} from '../service-config';
 import { Appointment, AvailabilitySlot } from '../model/appointment';
 import { InitialAppointmentMock } from '../data/data-mock';
 import { mergeMaps } from '../data/utils';
@@ -18,6 +22,11 @@ export class AppointmentService {
   // mock method to return currently selected appointment
   getAppointment(): Observable<Appointment> {
     return of(InitialAppointmentMock);
+  }
+
+  postAppointment(appointment: Appointment): Observable<null> {
+    const url = `${BACKEND_API_URL}/${BOOK_SLOTS_ENDPOINT}`;
+    return this.http.post<null>(url, appointment);
   }
 
   getSlotsAvailability(
