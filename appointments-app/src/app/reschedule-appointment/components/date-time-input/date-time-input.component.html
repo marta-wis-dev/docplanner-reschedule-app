@@ -1,1 +1,9 @@
-<input [value]="value()" [readonly]="readonly" />
+<div class="input-container">
+  @if(loading()) {
+    <div class="spinner"></div>
+  } @else {
+    <img class="calendar-icon" ngSrc="images/calendar.png" width="30" height="30" alt="Calendar icon">
+  }
+
+    <input [value]="value() | dateTimeInputSlot" [readonly]="readonly" [class.loading]="loading()"/>
+</div>
