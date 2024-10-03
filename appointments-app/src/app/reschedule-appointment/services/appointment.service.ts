@@ -6,10 +6,10 @@ import {
   BACKEND_API_URL,
   BOOK_SLOTS_ENDPOINT,
   GET_WEEKLY_SLOTS_ENDPOINT,
-} from '../service-config';
+} from '../../service-config';
 import { Appointment, AvailabilitySlot } from '../model/appointment';
 import { InitialAppointmentMock } from '../data/data-mock';
-import { mergeMaps } from '../data/utils';
+import { getPreviousMonday, mergeMaps } from '../data/utils';
 
 export const DATE_FORMAT = 'yyyyMMdd';
 
@@ -47,7 +47,7 @@ export class AppointmentService {
     if (this.isMonday(startDate)) {
       return this.getSlotsAvailability(startDate);
     } else {
-      const previousMonday = this.getPreviousMonday(startDate);
+      const previousMonday = getPreviousMonday(startDate);
       const nextMonday = addWeeks(previousMonday, 1);
 
       return zip(
@@ -87,13 +87,5 @@ export class AppointmentService {
 
   private isMonday(date: Date): boolean {
     return date.getDate() === 1;
-  }
-
-  private getPreviousMonday(date: Date): Date {
-    const day = date.getDay(); // Get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-    const diff = day === 1 ? 0 : day === 0 ? 6 : day - 1; // Calculate the difference from Monday
-    const previousMonday = new Date(date); // Create a copy of the date
-    previousMonday.setDate(date.getDate() - diff); // Adjust the date to the previous Monday
-    return previousMonday;
   }
 }

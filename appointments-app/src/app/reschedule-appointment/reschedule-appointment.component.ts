@@ -7,6 +7,7 @@ import { AppointmentTimePickerService } from './services/appointment-time-picker
 import { Appointment, AvailabilitySlot } from './model/appointment';
 import { JsonPipe } from '@angular/common';
 import { AppointmentStore } from './services/appointment.store';
+import { addWeeks } from 'date-fns';
 
 @Component({
   selector: 'app-reschedule-appointment',
@@ -60,7 +61,29 @@ export class RescheduleAppointmentComponent implements OnInit, OnDestroy {
   }
 
   setNextWeek() {
+    if (!this.appointmentTimePickerService.isNextWeekAdded()) {
+      // fetch next week data if not added yet
+      this.fetchNextWeekSlots();
+    }
     this.appointmentTimePickerService.setNextWeek();
+  }
+
+  private fetchNextWeekSlots() {
+    const visibleWeekStart =
+      this.appointmentTimePickerService.visibleWeekStart();
+
+    if (visibleWeekStart) {
+      const nextWeekStart = addWeeks(visibleWeekStart, 1);
+
+      this.appointmentService
+        .getWeeklySlotsAvailability(nextWeekStart)
+        .pipe(
+          tap(newSlots =>
+            this.appointmentTimePickerService.addAvailableSlots(newSlots)
+          )
+        )
+        .subscribe();
+    }
   }
 
   private fetchAppointment() {

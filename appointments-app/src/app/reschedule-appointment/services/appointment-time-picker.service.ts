@@ -1,7 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { addDays, format } from 'date-fns';
+import { addDays, addWeeks, format, parseISO, subWeeks } from 'date-fns';
 import { AvailabilitySlot } from '../model/appointment';
-import { mergeMaps } from '../data/utils';
+import { getPreviousMonday, mergeMaps } from '../data/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,34 @@ export class AppointmentTimePickerService {
     }));
   }
 
-  setPreviousWeek() {}
+  setPreviousWeek() {
+    this.visibleWeekStart.update(currentValue =>
+      currentValue ? subWeeks(currentValue, 1) : null
+    );
+  }
 
-  setNextWeek() {}
+  setNextWeek() {
+    this.visibleWeekStart.update(currentValue =>
+      currentValue ? addWeeks(currentValue, 1) : null
+    );
+  }
+
+  // method to check if data about week was already fetched and added to allAvailableSlots
+  isNextWeekAdded(): boolean {
+    const all = this.allAvailableSlots();
+    const currentWeekStart = this.visibleWeekStart();
+
+    if (currentWeekStart) {
+      // Get the monday of the next week
+      const nextWeekMonday = addWeeks(getPreviousMonday(currentWeekStart), 2);
+
+      // Convert Map keys (date strings) to an array and compare them to `nextWeekMonday`
+      return Array.from(all.keys()).some(dateString => {
+        const date = parseISO(dateString);
+        return date >= nextWeekMonday; // Check if the date is in the next week
+      });
+    }
+
+    return false;
+  }
 }
