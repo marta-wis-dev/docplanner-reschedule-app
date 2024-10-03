@@ -27,6 +27,6 @@
     <p>Reschedule ..</p>
     <p>Click the button to confirm</p>
     <!--confirmation button-->
-    <button (click)="submitSelection()">Submit</button>
+    <button (click)="submitSelection()">{{newSlot()?.Start}}</button>
   </div>
 }

@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { DatePipe, JsonPipe } from '@angular/common';
+import {DatePipe, JsonPipe, SlicePipe} from '@angular/common';
 import { format } from 'date-fns';
 import { AvailabilitySlot, GroupedSlots } from '../../model/appointment';
 import { DayLabelPipe } from '../../pipes/day-label.pipe';
@@ -14,7 +14,7 @@ import { DayLabelPipe } from '../../pipes/day-label.pipe';
 @Component({
   selector: 'app-appointment-time-picker',
   standalone: true,
-  imports: [CarouselModule, JsonPipe, DatePipe, DayLabelPipe],
+  imports: [CarouselModule, JsonPipe, DatePipe, DayLabelPipe, SlicePipe],
   templateUrl: './appointment-time-picker.component.html',
   styleUrl: './appointment-time-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +24,7 @@ export class AppointmentTimePickerComponent {
   prev = output<void>();
   next = output<void>();
   onSelectSlot = output<AvailabilitySlot>();
+  showAll = signal<boolean>(false);
   // startDate$ = toObservable(this.startDate);
   //
   // private appointmentService = inject(AppointmentService);

@@ -14,7 +14,7 @@
             <p>{{ day.date | date: 'd MMMM' }}</p>
           </div>
           <div class="calendar-day--body">
-            @for (slot of day.slots; track slot) {
+            @for (slot of (showAll() ? day.slots : (day.slots | slice:0:6)); track slot) {
               @if (slot.Taken) {
                 <p class="calendar-day--slot-taken">
                   {{ slot.Start | date: 'HH:mm' }}
@@ -30,14 +30,13 @@
           </div>
         </div>
       }
+      @if(showAll()) {
+        <button (click)="showAll.set(false)">Less</button>
+      } @else {
+        <button (click)="showAll.set(true)">See more hours</button>
+      }
     </div>
   }
-
-  <!--&lt;!&ndash;        </ul>&ndash;&gt;-->
-  <!--&lt;!&ndash;      </div>&ndash;&gt;-->
-  <!--&lt;!&ndash;    </ng-template>&ndash;&gt;-->
-  <!--&lt;!&ndash;      }&ndash;&gt;-->
-  <!--&lt;!&ndash;  </carousel>&ndash;&gt;-->
 
   <button (click)="next.emit()">></button>
 </div>
