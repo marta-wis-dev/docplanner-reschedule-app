@@ -8,11 +8,17 @@ import { Appointment, AvailabilitySlot } from './model/appointment';
 import { JsonPipe } from '@angular/common';
 import { AppointmentStore } from './services/appointment.store';
 import { addWeeks } from 'date-fns';
+import { DateTimeInputSlotPipe } from './pipes/date-time-input-slot.pipe';
 
 @Component({
   selector: 'app-reschedule-appointment',
   standalone: true,
-  imports: [DateTimeInputComponent, AppointmentTimePickerComponent, JsonPipe],
+  imports: [
+    DateTimeInputComponent,
+    AppointmentTimePickerComponent,
+    JsonPipe,
+    DateTimeInputSlotPipe,
+  ],
   templateUrl: './reschedule-appointment.component.html',
   styleUrl: './reschedule-appointment.component.scss',
 })

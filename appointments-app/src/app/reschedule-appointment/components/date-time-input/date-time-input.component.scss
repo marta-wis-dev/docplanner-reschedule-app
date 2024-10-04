@@ -4,14 +4,17 @@ input.loading {
 
 .input-container {
   position: relative;
-  display: inline-block;
 }
 
-input {
-  width: 300px;
+input.date-time-input {
+  width: 100%;
   padding: 10px 10px 10px 40px;
+  border-color: transparent;
   height: 30px;
-  font-size: 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .spinner {
@@ -21,16 +24,16 @@ input {
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  border: 3px solid #f3f3f3; /* Light color */
-  border-top: 3px solid #3498db; /* Blue */
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 .calendar-icon {
   position: absolute;
-  left: 6px;
-  top: 10px;
+  left: 10px;
+  top: 43px;
 }
 
 @keyframes spin {

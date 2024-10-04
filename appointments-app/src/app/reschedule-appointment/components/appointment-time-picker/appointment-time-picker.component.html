@@ -1,28 +1,33 @@
-<div class="container">
-  <!--  startDate: {{ startDate()}}-->
-  <!--  @if(weekDays()) {-->
-
-  <button [disabled]="visibleSlots()[0].date === today()" (click)="prev.emit()">
+<div class="calendar-container">
+  <button
+    class="calendar-nav prev"
+    [disabled]="visibleSlots()[0].date === today()"
+    (click)="prev.emit()">
     <
   </button>
+
   @if (visibleSlots()) {
     <div class="calendar">
       @for (day of visibleSlots(); track day) {
         <div class="calendar-day">
           <div class="calendar-day--header">
             <p>{{ day.date | dayLabel }}</p>
-            <p>{{ day.date | date: 'd MMMM' }}</p>
+            <p class="gray second-line">{{ day.date | date: 'd MMMM' }}</p>
           </div>
           <div class="calendar-day--body">
-            @for (slot of (showAll() ? day.slots : (day.slots | slice:0:6)); track slot) {
+            @for (
+              slot of showAll() ? day.slots : (day.slots | slice: 0 : 7);
+              track slot
+            ) {
               @if (slot.Taken) {
-                <p class="calendar-day--slot-taken">
+                <p class="calendar-day--slot-taken text-center gray">
                   {{ slot.Start | date: 'HH:mm' }}
                 </p>
               } @else {
                 <a
-                  class="calendar-day--slot"
-                  (click)="onSelectSlot.emit(slot)"
+                  class="calendar-day--slot text-center"
+                  [class.selected]="slot.Start === selectedSlot()?.Start"
+                  (click)="selectSlot(slot)"
                   >{{ slot.Start | date: 'HH:mm' }}</a
                 >
               }
@@ -30,13 +35,17 @@
           </div>
         </div>
       }
-      @if(showAll()) {
-        <button (click)="showAll.set(false)">Less</button>
+      @if (showAll()) {
+        <button class="calendar-button" (click)="showAll.set(false)">
+          Less
+        </button>
       } @else {
-        <button (click)="showAll.set(true)">See more hours</button>
+        <button class="calendar-button" (click)="showAll.set(true)">
+          See more hours
+        </button>
       }
     </div>
   }
 
-  <button (click)="next.emit()">></button>
+  <button class="calendar-nav next" (click)="next.emit()">></button>
 </div>

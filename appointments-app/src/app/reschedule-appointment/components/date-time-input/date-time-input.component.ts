@@ -4,8 +4,8 @@ import {
   Input,
   input,
 } from '@angular/core';
-import {NgOptimizedImage} from "@angular/common";
-import {DateTimeInputSlotPipe} from "../../pipes/date-time-input-slot.pipe";
+import { NgOptimizedImage } from '@angular/common';
+import { DateTimeInputSlotPipe } from '../../pipes/date-time-input-slot.pipe';
 
 @Component({
   selector: 'app-date-time-input',

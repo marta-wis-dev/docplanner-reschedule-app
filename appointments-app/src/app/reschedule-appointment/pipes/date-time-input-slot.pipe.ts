@@ -1,14 +1,20 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {format} from "date-fns";
+import { format } from 'date-fns';
 
 @Pipe({
   name: 'dateTimeInputSlot',
-  standalone: true
+  standalone: true,
 })
 export class DateTimeInputSlotPipe implements PipeTransform {
+  transform(value: string | undefined, addOn: boolean = false): string {
+    if (!value) {
+      return '';
+    }
 
-  transform(value: string | undefined): string {
-    return value ? format(value, "'On' EEEE, dd MMMM yyyy 'at' HH:mm") : '';
+    // Format the date
+    const formattedDate = format(value, "EEEE, dd MMMM yyyy 'at' HH:mm");
+
+    // Add the prefix "On " if addOn is true
+    return addOn ? `On ${formattedDate}` : formattedDate;
   }
-
 }

@@ -1,5 +1,4 @@
-<!--currently selected date time of appointment-->
-<p>
+<p class="reschedule-appointment-title">
   Confirm your appointment with
   <span class="bold"
     >Dr. {{ appointment()?.Doctor?.Name }}
@@ -7,26 +6,25 @@
   >
 </p>
 
-<app-date-time-input
-  [value]="appointment()?.Start"
-  [loading]="loading()"
-  [readonly]="false" />
+<!--currently selected date time of appointment-->
+<app-date-time-input [value]="appointment()?.Start" [loading]="loading()" />
 
-<!--new appointment time picker-->
-<p>Did you have unexpected situation?</p>
-<p>You can change...</p>
+<!--new appointment slot picker-->
+<p class="bold">Did you have an unexpected situation?</p>
+<p>You can change the appointment for when it suits you better</p>
 <app-appointment-time-picker
   [visibleSlots]="visibleSlots()"
   (prev)="setPreviousWeek()"
   (onSelectSlot)="selectSlot($event)"
   (next)="setNextWeek()" />
 
+<!--confirmation button-->
 @if (newSlot()) {
   <div class="submit-section">
-    <!--change submission button-->
-    <p>Reschedule ..</p>
+    <p class="bold">Reschedule</p>
     <p>Click the button to confirm</p>
-    <!--confirmation button-->
-    <button (click)="submitSelection()">{{newSlot()?.Start}}</button>
+    <button class="submit-button bold" (click)="submitSelection()">
+      {{ newSlot()?.Start | dateTimeInputSlot }}
+    </button>
   </div>
 }
