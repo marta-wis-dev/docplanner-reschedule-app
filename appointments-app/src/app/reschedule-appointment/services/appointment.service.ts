@@ -86,6 +86,6 @@ export class AppointmentService {
   }
 
   private isMonday(date: Date): boolean {
-    return date.getDate() === 1;
+    return date.getDay() === 1;
   }
 }

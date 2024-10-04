@@ -1,4 +1,10 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { DateTimeInputComponent } from './components/date-time-input/date-time-input.component';
 import { AppointmentTimePickerComponent } from './components/appointment-time-picker/appointment-time-picker.component';
 import { AppointmentService } from './services/appointment.service';
@@ -21,11 +27,12 @@ import { DateTimeInputSlotPipe } from './pipes/date-time-input-slot.pipe';
   ],
   templateUrl: './reschedule-appointment.component.html',
   styleUrl: './reschedule-appointment.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RescheduleAppointmentComponent implements OnInit, OnDestroy {
-  private appointmentService = inject(AppointmentService);
-  private appointmentStore = inject(AppointmentStore);
-  private appointmentTimePickerService = inject(AppointmentTimePickerService);
+  appointmentService = inject(AppointmentService);
+  appointmentStore = inject(AppointmentStore);
+  appointmentTimePickerService = inject(AppointmentTimePickerService);
 
   appointment = this.appointmentStore.appointment;
   loading = this.appointmentStore.loading;

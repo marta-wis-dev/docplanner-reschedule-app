@@ -5,7 +5,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { DatePipe, JsonPipe, SlicePipe } from '@angular/common';
 import { format } from 'date-fns';
 import { AvailabilitySlot, GroupedSlots } from '../../model/appointment';
@@ -14,7 +13,7 @@ import { DayLabelPipe } from '../../pipes/day-label.pipe';
 @Component({
   selector: 'app-appointment-time-picker',
   standalone: true,
-  imports: [CarouselModule, JsonPipe, DatePipe, DayLabelPipe, SlicePipe],
+  imports: [JsonPipe, DatePipe, DayLabelPipe, SlicePipe],
   templateUrl: './appointment-time-picker.component.html',
   styleUrl: './appointment-time-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

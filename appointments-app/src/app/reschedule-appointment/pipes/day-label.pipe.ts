@@ -13,7 +13,7 @@ export class DayLabelPipe implements PipeTransform {
     } else if (isTomorrow(date)) {
       return 'Tomorrow';
     } else {
-      return format(date, 'EEEE'); // Return the name of the day (e.g., Monday, Tuesday)
+      return format(date, 'EE'); // Return the name of the day (e.g., Mon, Tue)
     }
   }
 }

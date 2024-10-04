@@ -37,7 +37,6 @@ export class AppointmentTimePickerService {
       return format(addDays(rangeStart, i), 'yyyy-MM-dd');
     });
 
-    // TODO: eliminate past slots of today
     // Create the final grouped slots array
     return next7Days.map(date => ({
       date,

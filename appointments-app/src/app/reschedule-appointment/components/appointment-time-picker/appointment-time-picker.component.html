@@ -9,7 +9,7 @@
   @if (visibleSlots()) {
     <div class="calendar">
       @for (day of visibleSlots(); track day) {
-        <div class="calendar-day">
+        <div class="calendar-day text-center">
           <div class="calendar-day--header">
             <p>{{ day.date | dayLabel }}</p>
             <p class="gray second-line">{{ day.date | date: 'd MMMM' }}</p>
